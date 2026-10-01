@@ -52,7 +52,32 @@ jobs:
           echo "Project root: $ROOT"
       - name: Fix KSP version 
         run: |
-         sed -i 's/2.4.10-2.0.2/2.3.10/g' "$PROJECT_ROOT/build.gradle.kts" "$PROJECT_ROOT/app/build.gradle.kts"          
+         sed -i 's/2.4.10-2.0.2/2.3.10/g' "$PROJECT_ROOT/build.gradle.kts" "$PROJECT_ROOT/app/build.gradle.kts" 
+         
+      - name: Fix Kotlin compiler options
+        run: |
+          python3 - "$PROJECT_ROOT/app/build.gradle.kts" <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          p = Path(sys.argv[1])
+          s = p.read_text()
+
+          s = re.sub(
+              r'\n[ \t]*kotlinOptions\s*\{\s*jvmTarget\s*=\s*"17"\s*\}',
+              '''
+          kotlin {
+              compilerOptions {
+                  jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("17")
+              }
+          }''',
+              s,
+              count=1
+          )
+
+          p.write_text(s)
+          PY
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
