@@ -27,7 +27,7 @@ jobs:
 
       - name: Install Android SDK packages
         run: |
-          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+          sdkmanager "platforms;android-37" "build-tools;36.0.0"
 
       - name: Find uploaded Hefzyar ZIP
         run: |
@@ -53,7 +53,7 @@ jobs:
       - name: Fix KSP version 
         run: |
          sed -i 's/2.4.10-2.0.2/2.3.10/g' "$PROJECT_ROOT/build.gradle.kts" "$PROJECT_ROOT/app/build.gradle.kts" 
-         
+         sed -i 's/compileSdk = 36/compileSdk = 37/g' "$PROJECT_ROOT/app/build.gradle.kts" 
       - name: Fix Kotlin compiler options
         run: |
           python3 - "$PROJECT_ROOT/app/build.gradle.kts" <<'PY'
