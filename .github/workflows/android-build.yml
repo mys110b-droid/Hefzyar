@@ -50,9 +50,10 @@ jobs:
           fi
           echo "PROJECT_ROOT=$ROOT" >> "$GITHUB_ENV"
           echo "Project root: $ROOT"
-       - name: Fix KSP version
-          run: |
-           sed -i 's/2.4.10-2.0.2/2.3.10/g' "$PROJECT_ROOT/build.gradle.kts"
+
+      - name: Fix KSP version
+        run: |
+          sed -i 's/2.4.10-2.0.2/2.3.10/g' "$PROJECT_ROOT/build.gradle.kts"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
