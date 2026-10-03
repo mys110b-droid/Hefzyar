@@ -27,7 +27,7 @@ jobs:
 
       - name: Install Android SDK packages
         run: |
-          sdkmanager --channel=3 "platforms;android-37" "build-tools;36.0.0"
+          sdkmanager --list --channel=3 | grep -E "platforms;android-37|android-37"
       - name: Find uploaded Hefzyar ZIP
         run: |
           ZIP=$(find . -maxdepth 2 -type f -name "*.zip" | head -n 1)
