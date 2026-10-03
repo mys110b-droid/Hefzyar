@@ -76,7 +76,10 @@ jobs:
           )
 
           p.write_text(s)
-          PY
+          PY 
+      - name: Fix Android theme
+        run: |
+          find "$PROJECT_ROOT/app/src/main/res" -type f -name "themes.xml" -exec sed -i 's/Theme.Material3.DayNight.NoActionBar/@android:style\/Theme.Material.Light.NoActionBar/g' {} +
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
