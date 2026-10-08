@@ -49,10 +49,19 @@ jobs:
           fi
           echo "PROJECT_ROOT=$ROOT" >> "$GITHUB_ENV"
           echo "Project root: $ROOT"
-      - name: Show Quran validator source
-        run: | 
-          echo "===== QuranImportValidator.kt lines 35-45 ====="
-          sed -n '35,45p' "$PROJECT_ROOT/app/src/main/java/ir/hefzyar/app/domain/quran/importer/QuranImportValidator.kt"
+      - name: Show problematic source files
+        run: |
+            echo "===== MemorizationFlow.kt ====="
+            sed -n '1,80p' "$PROJECT_ROOT/app/src/main/java/ir/hefzyar/app/domain/memorization/MemorizationFlow.kt"
+
+            echo "===== QuranImportPipeline.kt ====="
+            sed -n '1,100p' "$PROJECT_ROOT/app/src/main/java/ir/hefzyar/app/domain/quran/importer/QuranImportPipeline.kt"
+
+            echo "===== QuranImportValidator.kt ====="
+            sed -n '1,100p' "$PROJECT_ROOT/app/src/main/java/ir/hefzyar/app/domain/quran/importer/QuranImportValidator.kt"
+
+            echo "===== HomeScreen.kt ====="
+            sed -n '55,80p' "$PROJECT_ROOT/app/src/main/java/ir/hefzyar/app/feature/home/HomeScreen.kt"
       - name: Fix KSP version
         run: |
          sed -i 's/2.4.10-2.0.2/2.3.10/g' "$PROJECT_ROOT/build.gradle.kts" "$PROJECT_ROOT/app/build.gradle.kts" 
