@@ -61,14 +61,20 @@ jobs:
                       jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("17")\
                   }\
               }' "$PROJECT_ROOT/app/build.gradle.kts"
-      - name: Fix Android theme
-        run: |
-          find "$PROJECT_ROOT/app/src/main/res" -type f -name "themes.xml" -exec sed -i 's/Theme.Material3.DayNight.NoActionBar/@android:style\/Theme.Material.Light.NoActionBar/g' {} +
+      
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
           gradle-version: '9.6.0'
-
+      - name: Fix Android theme
+        run: |
+          mkdir -p "$PROJECT_ROOT/app/src/main/res/values"
+          cat >> "$PROJECT_ROOT/app/src/main/res/values/hefzyar_theme_fix.xml" <<'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <style name="Theme.Material3.DayNight.NoActionBar" parent="@android:style/Theme.Material.Light.NoActionBar" />
+          </resources>
+          EOF
       - name: Build Debug APK
         run: |
           cd "$PROJECT_ROOT"
