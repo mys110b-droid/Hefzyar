@@ -84,7 +84,12 @@ jobs:
                       jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("17")\
                   }\
               }' "$PROJECT_ROOT/app/build.gradle.kts"
-      
+
+      - name: Fix memorization flow
+        run: |
+          FILE="$PROJECT_ROOT/app/src/main/java/ir/hefzyar/app/domain/memorization/MemorizationFlow.kt"
+          sed -i '/MemorizationState.PREPARING ->/i\
+            MemorizationState.LISTENING -> MemorizationState.MEMORIZING' "$FILE"
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
         with:
