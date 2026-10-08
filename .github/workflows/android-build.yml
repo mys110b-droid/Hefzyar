@@ -55,28 +55,12 @@ jobs:
          sed -i 's/compileSdk = 36/compileSdk = 37/g' "$PROJECT_ROOT/app/build.gradle.kts" 
       - name: Fix Kotlin compiler options
         run: |
-          python3 - "$PROJECT_ROOT/app/build.gradle.kts" <<'PY'
-          import re
-          import sys
-          from pathlib import Path
-
-          p = Path(sys.argv[1])
-          s = p.read_text()
-
-          s = re.sub(
-              r'\n[ \t]*kotlinOptions\s*\{\s*jvmTarget\s*=\s*"17"\s*\}',
-              '''
-          kotlin {
-              compilerOptions {
-                  jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("17")
-              }
-          }''',
-              s,
-              count=1
-          )
-
-          p.write_text(s)
-          PY 
+          sed -i '/kotlinOptions[[:space:]]*{/,/^[[:space:]]*}/c\
+              kotlin {\
+                  compilerOptions {\
+                      jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget("17")\
+                  }\
+              }' "$PROJECT_ROOT/app/build.gradle.kts"
       - name: Fix Android theme
         run: |
           find "$PROJECT_ROOT/app/src/main/res" -type f -name "themes.xml" -exec sed -i 's/Theme.Material3.DayNight.NoActionBar/@android:style\/Theme.Material.Light.NoActionBar/g' {} +
