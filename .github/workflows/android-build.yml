@@ -62,6 +62,16 @@ jobs:
 
             echo "===== HomeScreen.kt ====="
             sed -n '55,80p' "$PROJECT_ROOT/app/src/main/java/ir/hefzyar/app/feature/home/HomeScreen.kt"
+      - name: Inspect Quran import models
+        run: |
+          echo "===== QuranImportAyah ====="
+          grep -R -n -E "data class QuranImportAyah|class QuranImportAyah|typealias QuranImportAyah" "$PROJECT_ROOT/app/src/main/java" || true
+
+          echo "===== QuranImportReport ====="
+          grep -R -n -E "data class QuranImportReport|class QuranImportReport|typealias QuranImportReport" "$PROJECT_ROOT/app/src/main/java" || true
+
+          echo "===== MemorizationState ====="
+          grep -R -n -A30 -B5 "enum class MemorizationState" "$PROJECT_ROOT/app/src/main/java" || true
       - name: Fix KSP version
         run: |
          sed -i 's/2.4.10-2.0.2/2.3.10/g' "$PROJECT_ROOT/build.gradle.kts" "$PROJECT_ROOT/app/build.gradle.kts" 
